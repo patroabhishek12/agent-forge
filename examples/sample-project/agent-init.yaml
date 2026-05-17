@@ -1,0 +1,23 @@
+version: 1
+project:
+  name: payments-service
+  language: kotlin
+  stack: [spring-boot, postgres, kafka]
+
+sources:
+  - type: local
+    path: ../org-defaults
+  - type: local
+    path: ./rules
+
+targets:
+  - claude-code
+  - copilot
+
+policy:
+  secrets:
+    block_paths: [".env*", "**/credentials.json"]
+  mcp_servers:
+    - name: jira
+      command: npx
+      args: ["-y", "@atlassian/mcp-jira"]

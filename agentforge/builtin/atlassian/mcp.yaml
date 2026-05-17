@@ -1,0 +1,15 @@
+mcp_servers:
+  - name: jira
+    command: npx
+    args: ["-y", "@atlassian/jira-mcp"]
+    env:
+      JIRA_BASE_URL: "${JIRA_BASE_URL}"
+      JIRA_API_TOKEN: "${JIRA_API_TOKEN}"
+      JIRA_USER_EMAIL: "${JIRA_USER_EMAIL}"
+  - name: confluence
+    command: npx
+    args: ["-y", "@atlassian/confluence-mcp"]
+    env:
+      CONFLUENCE_BASE_URL: "${CONFLUENCE_BASE_URL}"
+      CONFLUENCE_API_TOKEN: "${CONFLUENCE_API_TOKEN}"
+      CONFLUENCE_USER_EMAIL: "${CONFLUENCE_USER_EMAIL}"

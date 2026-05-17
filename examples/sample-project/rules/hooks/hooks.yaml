@@ -1,0 +1,14 @@
+hooks:
+  - event: PreToolUse
+    matcher:
+      tool: Edit
+      path_glob: "**/db/migration/*.sql"
+    script: protect-migrations.sh
+    fallback: instruction
+
+  - event: PostToolUse
+    matcher:
+      tool: Edit
+      path_glob: "**/*.kt"
+    script: ktlint-format.sh
+    fallback: github-action

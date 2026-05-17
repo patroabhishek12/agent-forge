@@ -1,0 +1,8 @@
+mcp_servers:
+  - name: bitbucket
+    command: npx
+    args: ["-y", "mcp-server-bitbucket"]
+    env:
+      BITBUCKET_URL: "${BITBUCKET_URL}"
+      BITBUCKET_USERNAME: "${BITBUCKET_USERNAME}"
+      BITBUCKET_APP_PASSWORD: "${BITBUCKET_APP_PASSWORD}"

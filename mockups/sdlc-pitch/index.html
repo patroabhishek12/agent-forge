@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SDLC Config Scaffolding Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1217;
+      --bg-2: #0f1b24;
+      --panel: #0f1f2b;
+      --panel-2: #122633;
+      --text: #e9f1f7;
+      --muted: #a9b9c6;
+      --accent: #25f1cf;
+      --accent-2: #ff8a3d;
+      --line: rgba(233, 241, 247, 0.12);
+      --grid: rgba(233, 241, 247, 0.05);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% 0%, #142836 0%, transparent 60%),
+                  radial-gradient(1000px 600px at 90% 10%, #0f2632 0%, transparent 55%),
+                  linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+      scroll-behavior: smooth;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(transparent 0 49px, var(--grid) 49px 50px),
+        linear-gradient(90deg, transparent 0 49px, var(--grid) 49px 50px);
+      background-size: 50px 50px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(37, 241, 207, 0.08) 45%, transparent 60%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main { position: relative; z-index: 1; }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 8vw;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+
+    .slide-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .slide-number {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      grid-column: 1 / span 2;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 4.5vw, 5.5rem);
+      grid-column: 1 / span 9;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      grid-column: 1 / span 7;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      line-height: 1.6;
+    }
+
+    .lead {
+      font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+      color: var(--text);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .badge {
+      font-family: "IBM Plex Mono", monospace;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(15, 31, 43, 0.6);
+    }
+
+    .panel {
+      background: linear-gradient(140deg, rgba(18, 38, 51, 0.9) 0%, rgba(15, 31, 43, 0.9) 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      grid-column: 1 / span 12;
+    }
+
+    .tree {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.55;
+      white-space: pre-line;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .pain-list {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .promise {
+      grid-column: 1 / span 7;
+    }
+
+    .map {
+      grid-column: 8 / span 5;
+      display: grid;
+      gap: 12px;
+    }
+
+    .map-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      font-family: "IBM Plex Mono", monospace;
+      background: rgba(15, 31, 43, 0.55);
+    }
+
+    .pipeline {
+      grid-column: 1 / span 12;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .pipeline-step {
+      position: relative;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(15, 31, 43, 0.7);
+      min-height: 140px;
+    }
+
+    .pipeline-step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -18px;
+      width: 20px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .pipeline-step:last-child::after {
+      display: none;
+    }
+
+    .callouts {
+      grid-column: 1 / span 12;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .callout {
+      padding: 10px 16px;
+      border: 1px solid rgba(37, 241, 207, 0.35);
+      border-radius: 999px;
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--accent);
+      background: rgba(37, 241, 207, 0.08);
+    }
+
+    .outputs {
+      grid-column: 1 / span 12;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .output-title {
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .flow {
+      grid-column: 1 / span 12;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+    }
+
+    .flow-steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--accent);
+      background: rgba(15, 31, 43, 0.8);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-2);
+      color: var(--text);
+      text-decoration: none;
+      font-family: "IBM Plex Mono", monospace;
+      background: linear-gradient(120deg, rgba(255, 138, 61, 0.2), rgba(255, 138, 61, 0.05));
+    }
+
+    .impact {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      grid-column: 1 / span 8;
+    }
+
+    .impact-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      background: rgba(15, 31, 43, 0.7);
+    }
+
+    .impact-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    nav.slide-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      gap: 12px;
+      z-index: 5;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      background: transparent;
+      display: inline-block;
+    }
+
+    .dot:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .slide {
+      opacity: 0;
+      transform: translateY(25px);
+      animation: reveal 0.8s ease forwards;
+    }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide:nth-of-type(1) { animation-delay: 0.1s; }
+    .slide:nth-of-type(2) { animation-delay: 0.15s; }
+    .slide:nth-of-type(3) { animation-delay: 0.2s; }
+    .slide:nth-of-type(4) { animation-delay: 0.25s; }
+    .slide:nth-of-type(5) { animation-delay: 0.3s; }
+    .slide:nth-of-type(6) { animation-delay: 0.35s; }
+    .slide:nth-of-type(7) { animation-delay: 0.4s; }
+
+    @media (max-width: 980px) {
+      section { padding: 70px 8vw; }
+      .slide-inner { grid-template-columns: repeat(6, 1fr); }
+      .slide-number { grid-column: 1 / span 6; }
+      h1, h2 { grid-column: 1 / span 6; }
+      .columns { grid-template-columns: 1fr; }
+      .promise, .map { grid-column: 1 / span 6; }
+      .pipeline { grid-template-columns: 1fr; }
+      .pipeline-step::after { display: none; }
+      .outputs { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .impact { grid-template-columns: 1fr; grid-column: 1 / span 6; }
+      nav.slide-nav { right: 12px; }
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 60px 6vw; }
+      h1 { font-size: 2.4rem; }
+      h2 { font-size: 1.9rem; }
+      .badge-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="slide-nav" aria-label="Slide navigation">
+    <a href="#slide-1" class="dot" aria-label="Go to slide 1"></a>
+    <a href="#slide-2" class="dot" aria-label="Go to slide 2"></a>
+    <a href="#slide-3" class="dot" aria-label="Go to slide 3"></a>
+    <a href="#slide-4" class="dot" aria-label="Go to slide 4"></a>
+    <a href="#slide-5" class="dot" aria-label="Go to slide 5"></a>
+    <a href="#slide-6" class="dot" aria-label="Go to slide 6"></a>
+    <a href="#slide-7" class="dot" aria-label="Go to slide 7"></a>
+  </nav>
+
+  <main>
+    <section id="slide-1" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 01</div>
+        <h1>One SDLC Manifest. Many Agent Targets.</h1>
+        <p class="lead" style="grid-column: 1 / span 7;">
+          Stop maintaining duplicated agent configs across tools.
+        </p>
+        <div class="badge-row" style="grid-column: 1 / span 8;">
+          <span class="badge">Single source of truth</span>
+          <span class="badge">Provenance</span>
+          <span class="badge">Idempotent builds</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-2" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 02</div>
+        <h2>The Problem: Fragmented Agent Configs</h2>
+        <div class="columns">
+          <div class="panel">
+            <h3>Claude Code</h3>
+            <div class="tree">.claude/
+  agents/
+  commands/
+  memory/
+  settings.json</div>
+            <div class="pain-list">
+              <span>Policy drift across teams</span>
+              <span>Manual review friction</span>
+              <span>Duplicated updates</span>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Copilot</h3>
+            <div class="tree">.github/
+  prompts/
+  instructions/
+  workflows/
+  copilot.yml</div>
+            <div class="pain-list">
+              <span>Inconsistent rules</span>
+              <span>Onboarding time cost</span>
+              <span>Tool lock-in</span>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Other Agents</h3>
+            <div class="tree">.cursor/
+  rules/
+  settings/
+  prompts/
+  extensions/</div>
+            <div class="pain-list">
+              <span>No shared baseline</span>
+              <span>Policy duplication</span>
+              <span>Audit gaps</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-3" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 03</div>
+        <h2>What It Solves</h2>
+        <div class="promise">
+          <p class="lead">Author once, ship everywhere.</p>
+          <p>
+            A single manifest defines how policy, skills, and workflows behave —
+            rendered into each target agent's native configuration.
+          </p>
+        </div>
+        <div class="map">
+          <div class="map-item"><span>Policies</span><span class="muted">→ Rules</span></div>
+          <div class="map-item"><span>Skills</span><span class="muted">→ Skills</span></div>
+          <div class="map-item"><span>Commands</span><span class="muted">→ Commands</span></div>
+          <div class="map-item"><span>Agents</span><span class="muted">→ Agents</span></div>
+          <div class="map-item"><span>Hooks</span><span class="muted">→ Hooks</span></div>
+          <div class="map-item"><span>MCP Servers</span><span class="muted">→ MCP</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-4" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 04</div>
+        <h2>How It Works: Source to Target</h2>
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <h3>Sources</h3>
+            <p>Org defaults, project overrides, policy rules, skills, and memory.</p>
+          </div>
+          <div class="pipeline-step">
+            <h3>IR</h3>
+            <p>Normalized intermediate representation with keyed merges.</p>
+          </div>
+          <div class="pipeline-step">
+            <h3>Adapters</h3>
+            <p>Transform IR into each agent's schema and file layout.</p>
+          </div>
+          <div class="pipeline-step">
+            <h3>Targets</h3>
+            <p>Rendered .claude/, .github/, and other agent folders.</p>
+          </div>
+        </div>
+        <div class="callouts">
+          <span class="callout">Merge order: org → project → local</span>
+          <span class="callout">Override-by-key</span>
+          <span class="callout">Provenance tracked</span>
+          <span class="callout">Idempotent builds</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-5" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 05</div>
+        <h2>Adapters & Outputs</h2>
+        <div class="outputs">
+          <div class="panel">
+            <div class="output-title">.claude/</div>
+            <div class="tree">agents/
+commands/
+context/
+features/
+settings.json
+mcp.json</div>
+          </div>
+          <div class="panel">
+            <div class="output-title">.github/</div>
+            <div class="tree">prompts/
+instructions/
+workflows/
+copilot.yml
+agents/</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-6" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 06</div>
+        <h2>Sample Project Flow</h2>
+        <div class="flow">
+          <div class="panel">
+            <h3>Inputs</h3>
+            <p class="muted">Org defaults + project overrides</p>
+            <div class="tree" style="margin-top: 12px;">org-defaults/
+  rules/
+  skills/
+  memory/
+project/
+  agent-init.yaml
+  rules/
+  skills/
+  hooks/</div>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="step-dot">1</div>
+              <div>
+                <p class="lead">Build manifest</p>
+                <p>Load and merge IR with provenance and policy order.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-dot">2</div>
+              <div>
+                <p class="lead">Render outputs</p>
+                <p>Generate agent folders consistently across tools.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-dot">3</div>
+              <div>
+                <p class="lead">Diff + check in CI</p>
+                <p>Fail builds if output drifts from source of truth.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide-7" class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">Slide 07</div>
+        <h2>Impact & Next Steps</h2>
+        <div class="impact">
+          <div class="impact-card">
+            <strong>Consistency</strong>
+            <p>Unified rules for every agent target with traceable provenance.</p>
+          </div>
+          <div class="impact-card">
+            <strong>Onboarding Speed</strong>
+            <p>New teams inherit defaults instantly with minimal setup.</p>
+          </div>
+          <div class="impact-card">
+            <strong>Auditability</strong>
+            <p>Single manifest history supports compliance reviews.</p>
+          </div>
+          <div class="impact-card">
+            <strong>Portability</strong>
+            <p>Move between tools without rewriting policy logic.</p>
+          </div>
+        </div>
+        <div style="grid-column: 9 / span 4; display: grid; gap: 16px;">
+          <p class="lead">Add agent-init.yaml, run build, gate with diff --check.</p>
+          <a class="cta" href="#slide-1">Start with the manifest →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

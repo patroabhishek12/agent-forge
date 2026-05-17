@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-init.dev/schemas/manifest-v1.json",
+  "title": "agent-init manifest",
+  "type": "object",
+  "required": ["version", "project", "targets"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Manifest schema version. Currently only 1 is supported."
+    },
+    "project": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "language": { "type": "string" },
+        "stack": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Loaded in order; later sources override earlier ones.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "local" },
+              "path": { "type": "string", "minLength": 1 }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "git" },
+              "url": { "type": "string", "minLength": 1 },
+              "ref": { "type": "string", "default": "main" },
+              "path": { "type": "string" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "bundle"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "builtin" },
+              "bundle": { "type": "string", "minLength": 1,
+                "description": "Name of a built-in bundle shipped with agent-init (e.g. core, atlassian, github)." }
+            }
+          }
+        ]
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["claude-code", "copilot"]
+      },
+      "uniqueItems": true
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "secrets": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "block_paths": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "allowed_tools": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": "Map of agent-name -> list of allowed tool names."
+        },
+        "mcp_servers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "command"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "command": { "type": "string", "minLength": 1 },
+              "args": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "env": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

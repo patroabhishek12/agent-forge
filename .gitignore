@@ -1,0 +1,30 @@
+# build artifacts
+dist/
+build/
+*.egg-info/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# environment
+.venv/
+venv/
+.env
+
+# editor
+.idea/
+.vscode/
+
+# rendered output from running the example
+examples/sample-project/.claude/
+examples/sample-project/.github/
+examples/sample-project/.vscode/
+examples/sample-project/CLAUDE.md
+examples/sample-project/.mcp.json
+examples/sample-project/out/

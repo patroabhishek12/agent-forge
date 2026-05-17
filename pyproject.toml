@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentforge"
+version = "0.1.0"
+description = "Generate .claude/, .github/ and other agent configs from one SDLC manifest."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "you" }]
+keywords = ["claude-code", "copilot", "agents", "sdlc", "scaffolding"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+]
+dependencies = [
+    "pyyaml>=6.0",
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-cov>=4",
+    "ruff>=0.4",
+    "mypy>=1.8",
+]
+
+[project.scripts]
+agentforge = "agentforge.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/you/agentforge"
+Issues = "https://github.com/you/agentforge/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agentforge"]
+include = [
+  "agentforge/schema/manifest.schema.json",
+  "agentforge/builtin/**/*.md",
+  "agentforge/builtin/**/*.yaml",
+]
+
+[tool.hatch.build.targets.wheel.force-include]
+"agentforge/schema/manifest.schema.json" = "agentforge/schema/manifest.schema.json"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
